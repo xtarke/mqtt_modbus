@@ -251,16 +251,23 @@ void rx_commands_task(void *pvParameters){
 			if (size > 4)
 				size = 4;
 
+			uint16_t data;
 			for (int i=addr,j=4; i < (addr + size); i++, j+=2) {
-				uint16_t data = get_register(i);
+				data = get_register(i);
 				pkg[j] = data >> 8;
 				pkg[j+1] = data & 0xff;
 			}
+
+			printf("Read %x @ %x\n", data, addr);
 
 			crc16 = CRC16_2(pkg, size*2 + 4);
 
 			pkg[4+size*2] = crc16 >> 8;
 			pkg[4+size*2 + 1] = crc16 & 0xff;
+
+
+			for (int i=0; i < size*2 + 6; i++)
+				printf("pkg[%d]:  %x\n", i, pkg[i]);
 
 			send_data_rs485(pkg, size*2 + 6);
 		}

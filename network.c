@@ -84,7 +84,7 @@ static const char *  get_my_id(void)
     if (my_id_done)
         return my_id;
     if (!sdk_wifi_get_macaddr(STATION_IF, (uint8_t *)my_id))
-        return NULL
+        return NULL;
     for (i = 5; i >= 0; --i)
     {
         x = my_id[i] & 0x0F;
